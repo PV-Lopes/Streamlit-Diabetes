@@ -4,15 +4,13 @@ import joblib
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# ===============================
 # CONFIGURAÇÃO BÁSICA
-# ===============================
+
 st.set_page_config(page_title="Análise de Clusters", layout="wide")
 st.title("Análise de Clusters - Modelo KMeans")
 
-# ===============================
 # CARREGAMENTO DOS ARQUIVOS
-# ===============================
+
 @st.cache_resource
 def load_model_and_data():
     kmeans = joblib.load("kmeans_model.pkl")
@@ -24,22 +22,21 @@ kmeans, scaler, df = load_model_and_data()
 
 st.success("Modelo e dados carregados com sucesso!")
 
-# ===============================
+
 # EXIBIÇÃO DOS DADOS
-# ===============================
+
 st.subheader("Dados com Clusters")
 st.dataframe(df.head())
 
-# ===============================
+
 # MÉDIAS POR CLUSTER
-# ===============================
+
 st.subheader("Média das Variáveis por Cluster")
 cluster_means = df.groupby("cluster").mean(numeric_only=True)
 st.dataframe(cluster_means)
 
-# ===============================
 # HEATMAP DE CORRELAÇÕES ENTRE VARIÁVEIS
-# ===============================
+
 st.subheader("Heatmap - Média das variáveis por cluster")
 
 # Seleciona apenas as variáveis numéricas originais (sem target nem cluster)
@@ -52,9 +49,8 @@ plt.title("Média das variáveis por cluster")
 st.pyplot(plt)
 
 
-# ===============================
 # PREDIÇÃO PARA NOVOS DADOS
-# ===============================
+
 st.subheader("Teste de Novo Registro")
 
 col1, col2, col3, col4 = st.columns(4)
@@ -80,11 +76,11 @@ if st.button("🔮 Prever Cluster"):
     st.success(f"O novo registro pertence ao **Cluster {cluster_pred}**")
 
 
-# ===============================
 # VISUALIZAÇÃO FINAL (Clusters)
-# ===============================
+
 st.subheader("Distribuição dos Clusters")
 plt.figure(figsize=(8, 5))
 sns.countplot(data=df, x="cluster", palette="Set2")
 plt.title("Distribuição dos Clusters")
+
 st.pyplot(plt)
